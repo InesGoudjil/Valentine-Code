@@ -22,11 +22,10 @@
       padding: 40px;
       border-radius: 25px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      width: 550px;
+      width: 650px;
       position: relative;
     }
 
-    /* Sticker placeholder */
     .sticker-placeholder {
       margin: 0 auto 20px auto;
       display: flex;
@@ -35,7 +34,7 @@
     }
 
     h1 {
-      font-size: 24px;
+      font-size: 32px;
       margin-bottom: 20px;
     }
 
@@ -96,13 +95,69 @@
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-150px); opacity: 0; }
     }
+
+    /* ====== MOBILE RESPONSIVE ====== */
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+        padding: 30px;
+        border-radius: 20px;
+      }
+
+      .sticker-placeholder img {
+        width: 80px; /* smaller sticker on mobile */
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      #yesBtn {
+        font-size: 20px;
+        padding: 16px 30px;
+      }
+
+      #noBtn {
+        left: 120px;
+        top: 10px;
+        padding: 14px 28px;
+      }
+
+      .result img {
+        width: 150px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      #yesBtn {
+        font-size: 18px;
+        padding: 14px 28px;
+      }
+
+      #noBtn {
+        left: 100px;
+        top: 10px;
+        padding: 12px 24px;
+      }
+
+      .result img {
+        width: 120px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
   <div class="container" id="card">
-    <!-- Sticker placeholder -->
     <div class="sticker-placeholder">
       <img src="./assets/heart.png">
     </div>
@@ -133,8 +188,8 @@
     const card = document.getElementById('card');
 
     noBtn.addEventListener('mouseenter', () => {
-      const x = Math.random() * 250 + 100; // move farther horizontally
-      const y = Math.random() * 200; // move farther vertically
+      const x = Math.random() * 250 + 100; 
+      const y = Math.random() * 200; 
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
     });
