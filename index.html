@@ -22,26 +22,26 @@
       padding: 40px;
       border-radius: 25px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      width: 350px;
+      width: 320px;
       position: relative;
     }
 
     h1 {
-      font-size: 26px;
+      font-size: 24px;
       margin-bottom: 20px;
     }
 
     .buttons {
       margin-top: 30px;
       position: relative;
-      height: 150px;
+      height: 120px;
     }
 
     button {
-      padding: 15px 35px;
-      font-size: 20px;
+      padding: 12px 25px;
+      font-size: 16px;
       border: none;
-      border-radius: 40px;
+      border-radius: 30px;
       cursor: pointer;
       transition: 0.3s;
     }
@@ -49,17 +49,17 @@
     #yesBtn {
       background: #ff6b81;
       color: white;
-      margin-right: 20px;
+      margin-right: 10px;
     }
 
     #yesBtn:hover {
-      transform: scale(1.2);
+      transform: scale(1.1);
     }
 
     #noBtn {
       background: #ccc;
       position: absolute;
-      left: 200px;
+      left: 180px;
       top: 0;
     }
 
@@ -68,14 +68,8 @@
     }
 
     .result img {
-      width: 220px;
+      width: 200px;
       margin-top: 20px;
-      border-radius: 15px;
-    }
-
-    .cute-icon {
-      font-size: 50px;
-      margin-bottom: 15px;
     }
 
     .heart {
@@ -94,8 +88,7 @@
 <body>
 
   <div class="container" id="card">
-    <div class="cute-icon">🐝💖</div>
-    <h1>Will u my Valentine, <br> Meriem?</h1>
+    <h1>Will u 🐝 my Valentine, <br> Meriem? 💖</h1>
 
     <div class="buttons">
       <button id="yesBtn">Yes 💘</button>
@@ -103,10 +96,10 @@
     </div>
 
     <div class="result" id="result">
-      <div class="cute-icon">💌✨</div>
       <h2>YAAAY!! 🥹💞</h2>
-      <p>I knew it 😌<br>You just made my heart very happy 💕</p>
-      <img src="https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif" alt="cute gif placeholder">
+      <p>I knew it 😌  
+      <br>You just made my heart very happy 💕</p>
+      <img src="https://media.giphy.com/media/l0MYyDa8S9ghzNebm/giphy.gif" alt="cute gif">
     </div>
   </div>
 
@@ -114,21 +107,13 @@
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
     const result = document.getElementById('result');
+    const card = document.getElementById('card');
 
-    // NO button completely avoids the cursor
-    document.addEventListener('mousemove', (e) => {
-      const rect = noBtn.getBoundingClientRect();
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-
-      const offset = 100; // distance from mouse
-      if (mouseX > rect.left - offset && mouseX < rect.right + offset &&
-          mouseY > rect.top - offset && mouseY < rect.bottom + offset) {
-        const x = Math.random() * (window.innerWidth - rect.width);
-        const y = Math.random() * (window.innerHeight - rect.height);
-        noBtn.style.left = `${x}px`;
-        noBtn.style.top = `${y}px`;
-      }
+    noBtn.addEventListener('mouseenter', () => {
+      const x = Math.random() * 200;
+      const y = Math.random() * 80;
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
     });
 
     yesBtn.addEventListener('click', () => {
@@ -138,7 +123,7 @@
     });
 
     function createHearts() {
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 15; i++) {
         const heart = document.createElement('div');
         heart.classList.add('heart');
         heart.innerText = '💖';
