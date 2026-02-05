@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>For Sara 💖</title>
 
+  <!-- Fireworks JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.x/dist/index.umd.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -14,6 +17,75 @@
       align-items: center;
       font-family: 'Poppins', sans-serif;
       overflow: hidden;
+      position: relative;
+    }
+
+    /* 🌌 Night sky overlay */
+    .night-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(
+        circle at top,
+        #1b2a4e 0%,
+        #0b1026 45%,
+        #050812 100%
+      );
+      opacity: 0;
+      transition: opacity 3s ease-in-out;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body.night .night-overlay {
+      opacity: 1;
+    }
+
+    /* ⭐⭐ STAR FIELD (dense + layered) */
+    .stars {
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 5% 10%, white, transparent),
+        radial-gradient(1.5px 1.5px at 10% 80%, white, transparent),
+        radial-gradient(1px 1px at 15% 40%, white, transparent),
+        radial-gradient(2px 2px at 20% 60%, white, transparent),
+        radial-gradient(1px 1px at 25% 20%, white, transparent),
+        radial-gradient(1.2px 1.2px at 30% 75%, white, transparent),
+        radial-gradient(1.5px 1.5px at 35% 50%, white, transparent),
+        radial-gradient(1px 1px at 40% 15%, white, transparent),
+        radial-gradient(2px 2px at 45% 85%, white, transparent),
+        radial-gradient(1px 1px at 50% 30%, white, transparent),
+        radial-gradient(1.4px 1.4px at 55% 65%, white, transparent),
+        radial-gradient(1px 1px at 60% 45%, white, transparent),
+        radial-gradient(2px 2px at 65% 10%, white, transparent),
+        radial-gradient(1px 1px at 70% 80%, white, transparent),
+        radial-gradient(1.3px 1.3px at 75% 35%, white, transparent),
+        radial-gradient(2px 2px at 80% 55%, white, transparent),
+        radial-gradient(1px 1px at 85% 25%, white, transparent),
+        radial-gradient(1.5px 1.5px at 90% 70%, white, transparent),
+        radial-gradient(1px 1px at 95% 40%, white, transparent);
+      opacity: 0;
+      animation: twinkle 4s infinite alternate;
+      transition: opacity 3s ease-in-out;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    body.night .stars {
+      opacity: 0.9;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+
+    /* 🎆 Fireworks */
+    #fireworks {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
     }
 
     .container {
@@ -24,13 +96,13 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.1);
       width: 650px;
       position: relative;
+      z-index: 2;
     }
 
     .sticker-placeholder {
-      margin: 0 auto 20px auto;
+      margin: 0 auto 20px;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
 
     h1 {
@@ -56,9 +128,8 @@
     #yesBtn {
       background: #ff6b81;
       color: white;
-      margin-right: 10px;
-      font-size: 22px; 
-      padding: 18px 40px; 
+      font-size: 22px;
+      padding: 18px 40px;
     }
 
     #yesBtn:hover {
@@ -72,8 +143,9 @@
       top: 0;
     }
 
-    #subtext{
-      color: #333333;
+    #subtext {
+      color: #333;
+      margin-top: 20px;
     }
 
     .result {
@@ -85,27 +157,11 @@
       margin-top: 20px;
     }
 
-    .heart {
-      position: absolute;
-      font-size: 20px;
-      animation: float 3s linear infinite;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-150px); opacity: 0; }
-    }
-
-    /* ====== MOBILE RESPONSIVE ====== */
+    /* MOBILE */
     @media (max-width: 768px) {
       .container {
         width: 90%;
         padding: 30px;
-        border-radius: 20px;
-      }
-
-      .sticker-placeholder img {
-        width: 80px; /* smaller sticker on mobile */
       }
 
       h1 {
@@ -120,36 +176,6 @@
       #noBtn {
         left: 120px;
         top: 10px;
-        padding: 14px 28px;
-      }
-
-      .result img {
-        width: 150px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 25px;
-      }
-
-      h1 {
-        font-size: 18px;
-      }
-
-      #yesBtn {
-        font-size: 18px;
-        padding: 14px 28px;
-      }
-
-      #noBtn {
-        left: 100px;
-        top: 10px;
-        padding: 12px 24px;
-      }
-
-      .result img {
-        width: 120px;
       }
     }
   </style>
@@ -157,12 +183,22 @@
 
 <body>
 
-  <div class="container" id="card">
+  <!-- 🌌 Night layers -->
+  <div class="night-overlay"></div>
+  <div class="stars"></div>
+
+  <!-- 🎆 Fireworks -->
+  <div id="fireworks"></div>
+
+  <!-- 🔊 Fireworks audio -->
+  <audio id="fireworksSound" src="./assets/Fireworks.mp3"></audio>
+
+  <div class="container">
     <div class="sticker-placeholder">
-      <img src="./assets/heart.png">
+      <img src="./assets/heart.png" width="100">
     </div>
 
-    <h1>Sara will you bee my Valentine ?</h1>
+    <h1>Sara will you be my Valentine ?</h1>
 
     <div class="buttons">
       <button id="yesBtn">Yes ❤️‍🔥</button>
@@ -171,13 +207,12 @@
 
     <div class="result" id="result">
       <h2>YAAAY!! 🥹💞</h2>
-      <p> You just made my heart very happy 💕</p>
-      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWF6aG05bHBqOGM0enR5cnMwNTF1YWlnZXl2ZHB0Y3I0eDlvcjdrNyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Zl7u48zLVFgLpRwq6f/giphy.gif" 
-      alt="cute gif">
+      <p>You just made my heart very happy 💕</p>
+      <img src="https://media.giphy.com/media/Zl7u48zLVFgLpRwq6f/giphy.gif">
     </div>
 
     <div id="subtext">
-      "No" seems abit shy hehe 😈
+      "No" seems a bit shy hehe 😈
     </div>
   </div>
 
@@ -185,36 +220,47 @@
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
     const result = document.getElementById('result');
-    const card = document.getElementById('card');
+    const fireworksContainer = document.getElementById('fireworks');
+    const fireworksSound = document.getElementById('fireworksSound');
 
+    // Move NO button
     noBtn.addEventListener('mouseenter', () => {
-      const x = Math.random() * 350 + 200; 
-      const y = Math.random() * 300; 
+      const x = Math.random() * 300 + 150;
+      const y = Math.random() * 200;
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
     });
 
+    // Fireworks setup
+    const fireworks = new Fireworks.default(fireworksContainer, {
+      autoresize: true,
+      opacity: 0.6,
+      particles: 140,
+      intensity: 35,
+      flickering: 60,
+      hue: { min: 0, max: 360 }
+    });
+
+    // YES click
     yesBtn.addEventListener('click', () => {
       document.querySelector('.buttons').style.display = 'none';
       result.style.display = 'block';
       document.getElementById('subtext').style.display = 'none';
-      createHearts();
+
+      // 🌌 Fade to night + stars
+      document.body.classList.add('night');
+
+      // 🔊 Play sound
+      fireworksSound.currentTime = 0;
+      fireworksSound.play();
+
+      // 🎆 Fireworks
+      fireworks.start();
+      setTimeout(() => {
+        fireworks.stop();
+        fireworksSound.pause();
+      }, 10000);
     });
-
-    function createHearts() {
-      for (let i = 0; i < 15; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.innerText = '💖';
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.bottom = '0px';
-        document.body.appendChild(heart);
-
-        setTimeout(() => {
-          heart.remove();
-        }, 3000);
-      }
-    }
   </script>
 
 </body>
