@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>For Sara 💖</title>
@@ -20,16 +21,13 @@
       position: relative;
     }
 
-    /* 🌌 Night sky overlay */
     .night-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(
-        circle at top,
-        #1b2a4e 0%,
-        #0b1026 45%,
-        #050812 100%
-      );
+      background: radial-gradient(circle at top,
+          #1b2a4e 0%,
+          #0b1026 45%,
+          #050812 100%);
       opacity: 0;
       transition: opacity 3s ease-in-out;
       z-index: 0;
@@ -40,7 +38,6 @@
       opacity: 1;
     }
 
-    /* ⭐⭐ STAR FIELD (dense + layered) */
     .stars {
       position: fixed;
       inset: 0;
@@ -76,11 +73,15 @@
     }
 
     @keyframes twinkle {
-      from { opacity: 0.6; }
-      to { opacity: 1; }
+      from {
+        opacity: 0.6;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
-    /* 🎆 Fireworks */
     #fireworks {
       position: fixed;
       inset: 0;
@@ -93,7 +94,7 @@
       background: white;
       padding: 40px;
       border-radius: 25px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       width: 650px;
       position: relative;
       z-index: 2;
@@ -153,49 +154,26 @@
     }
 
     .result img {
-      width: 200px;
+      width: 400px;
+      max-width: 90%;
       margin-top: 20px;
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-      .container {
-        width: 90%;
-        padding: 30px;
-      }
-
-      h1 {
-        font-size: 20px;
-      }
-
-      #yesBtn {
-        font-size: 20px;
-        padding: 16px 30px;
-      }
-
-      #noBtn {
-        left: 120px;
-        top: 10px;
-      }
+      border-radius: 15px;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- 🌌 Night layers -->
   <div class="night-overlay"></div>
   <div class="stars"></div>
-
-  <!-- 🎆 Fireworks -->
   <div id="fireworks"></div>
 
-  <!-- 🔊 Fireworks audio -->
   <audio id="fireworksSound" src="./assets/Fireworks.mp3"></audio>
+  <audio id="loveSound" src="./assets/loveSound.mp3"></audio>
 
   <div class="container">
     <div class="sticker-placeholder">
-      <img src="./assets/heart.png" width="100">
+      <img src="./assets/love-svg.svg" width="100">
     </div>
 
     <h1>Sara will you be my Valentine ?</h1>
@@ -207,8 +185,9 @@
 
     <div class="result" id="result">
       <h2>YAAAY!! 🥹💞</h2>
-      <p>You just made my heart very happy 💕</p>
-      <img src="https://media.giphy.com/media/Zl7u48zLVFgLpRwq6f/giphy.gif">
+      <!-- <p>You just made my heart very happy 💕</p> -->
+      <img
+        src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTZybTg1MXd0ZnA3cDA3Mmpmczd4Z3YyMm8wZzQybHJ0MG84OGZnMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/HbWB5ayYihkBy/giphy.gif">
     </div>
 
     <div id="subtext">
@@ -222,6 +201,7 @@
     const result = document.getElementById('result');
     const fireworksContainer = document.getElementById('fireworks');
     const fireworksSound = document.getElementById('fireworksSound');
+    const loveSound = document.getElementById('loveSound');
 
     // Move NO button
     noBtn.addEventListener('mouseenter', () => {
@@ -241,27 +221,47 @@
       hue: { min: 0, max: 360 }
     });
 
-    // YES click
     yesBtn.addEventListener('click', () => {
       document.querySelector('.buttons').style.display = 'none';
       result.style.display = 'block';
       document.getElementById('subtext').style.display = 'none';
-
-      // 🌌 Fade to night + stars
       document.body.classList.add('night');
 
-      // 🔊 Play sound
+      // Play sounds
       fireworksSound.currentTime = 0;
+      loveSound.currentTime = 0;
+      fireworksSound.volume = 1;
+      loveSound.volume = 1;
       fireworksSound.play();
+      loveSound.play();
 
-      // 🎆 Fireworks
+      // Start fireworks
       fireworks.start();
+
+      const DURATION = 98000; // 1 min 38 sec
+      const FADE_DURATION = 3000; // last 3 sec fade-out
+
+      // Fade-out function
+      setTimeout(() => {
+        const fadeStep = 50; // ms per step
+        const fadeInterval = setInterval(() => {
+          fireworksSound.volume -= 1 / (FADE_DURATION / fadeStep);
+          loveSound.volume -= 1 / (FADE_DURATION / fadeStep);
+          if (fireworksSound.volume <= 0 || loveSound.volume <= 0) {
+            fireworksSound.pause();
+            loveSound.pause();
+            clearInterval(fadeInterval);
+          }
+        }, fadeStep);
+      }, DURATION - FADE_DURATION);
+
+      // Stop fireworks exactly at end
       setTimeout(() => {
         fireworks.stop();
-        fireworksSound.pause();
-      }, 10000);
+      }, DURATION);
     });
   </script>
 
 </body>
+
 </html>
